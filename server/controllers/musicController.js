@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const Music = require('../model/Music')
+const Music = require('../models/Music')
 exports.getAllMusics = async (req, res) => {
   try {
     const music = await Music.find()

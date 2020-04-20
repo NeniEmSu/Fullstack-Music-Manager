@@ -2,67 +2,72 @@
   <div class="container">
     <div>
       <logo />
-      <h1 class="title">
-        fullstack-music-manager
+      <h1>
+        FullStack Web Application
       </h1>
-      <h2 class="subtitle">
-        Fullstack music manager app with express
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <p>
+        A Fullstack web application using NUXTJS, express, mongoDb, Multer and
+        Docker.
+      </p>
+      <p>
+        The app provide a Music manaager with full Crud functionality, a
+        products section with CRUD functionality wraped arround jwt auth, a
+        basic store and an elegant music player.
+      </p>
+
+      <section class="products">
+        <h2>Products</h2>
+        <div v-for="thing in stuff" :key="thing._id">
+          <img :src="thing.imageUrl" :alt="thing.title" />
+          <h3>{{ thing.title }}</h3>
+          <p>{{ thing.description }}</p>
+          <p>{{ formatPrice(thing.price) }}</p>
+        </div>
+      </section>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
     Logo
+  },
+  async asyncData() {
+    const { data } = await axios.get('http://localhost:3000/api/stuff')
+    return { stuff: data }
+  },
+  methods: {
+    formatPrice(value) {
+      const val = (value / 100).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    }
+  },
+  head() {
+    return {
+      title: 'Stuff'
+    }
   }
 }
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+<style lang="scss" scoped>
+h1 {
+  margin-top: 30px;
+}
+img {
+  width: 200px;
+  height: 200px;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+h2 {
+  margin-bottom: 20px;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.products {
+  margin-top: 40px;
 }
 </style>

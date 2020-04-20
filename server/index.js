@@ -2,6 +2,8 @@
 const path = require('path')
 const express = require('express')
 const consola = require('consola')
+const morgan = require('morgan')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
@@ -9,6 +11,8 @@ const bodyParser = require('body-parser')
 const config = require('../nuxt.config.js')
 const stuffRoutes = require('./routes/stuff')
 const userRoutes = require('./routes/user')
+const musicRoutes = require('./routes/music')
+const usersRoutes = require('./routes/users')
 
 // Import and Set Nuxt.js options
 config.dev = process.env.NODE_ENV !== 'production'
@@ -26,13 +30,13 @@ async function start() {
     await builder.build()
   }
 
+  mongoose.set('useCreateIndex', true)
   mongoose
     .connect(
       'mongodb+srv://neni:88fAHEm9gteF69Lw@productsdevcluster-u3co4.mongodb.net/test?retryWrites=true&w=majority',
       {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: true
+        useUnifiedTopology: true
       }
     )
     .then(() => {
@@ -56,12 +60,20 @@ async function start() {
     next()
   })
 
+  app.use(cors())
+  // configure body parser
+  app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
 
+  app.use(morgan('dev')) // configire morgan
+
   app.use('/images', express.static(path.join(__dirname, 'images')))
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
   app.use('/api/stuff', stuffRoutes)
   app.use('/api/auth', userRoutes)
+  app.use('/api/music', musicRoutes)
+  app.use('/api/users', usersRoutes)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

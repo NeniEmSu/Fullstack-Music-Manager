@@ -1,8 +1,6 @@
 module.exports = {
   mode: 'universal',
-  /*
-   ** Headers of the page
-   */
+
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -14,53 +12,47 @@ module.exports = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src: 'https://kit.fontawesome.com/41fc25a21c.js'
+      }
+    ]
   },
-  /*
-   ** Customize the progress-bar color
-   */
+
   loading: { color: '#fff' },
-  /*
-   ** Global CSS
-   */
+
   css: [],
-  /*
-   ** Plugins to load before mounting the App
-   */
+
   plugins: [],
-  /*
-   ** Nuxt.js dev-modules
-   */
+
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module'
+    '@nuxtjs/stylelint-module',
+    '@nuxtjs/moment'
   ],
-  /*
-   ** Nuxt.js modules
-   */
+
   modules: [
-    // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
-    // Doc: https://axios.nuxtjs.org/usage
+    'vue-sweetalert2/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {},
-  /*
-   ** Build configuration
-   */
+
+  axios: {
+    proxy: true
+  },
+
   build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.(ogg|mp3|mp4|wav|mpe?g)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]'
+        }
+      })
+    }
   }
 }
