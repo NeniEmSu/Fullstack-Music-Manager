@@ -9,10 +9,7 @@ const { Nuxt, Builder } = require('nuxt')
 const app = express()
 const bodyParser = require('body-parser')
 const config = require('../nuxt.config.js')
-const stuffRoutes = require('./routes/stuff')
-const userRoutes = require('./routes/user')
 const musicRoutes = require('./routes/music')
-const usersRoutes = require('./routes/users')
 
 // Import and Set Nuxt.js options
 config.dev = process.env.NODE_ENV !== 'production'
@@ -67,13 +64,10 @@ async function start() {
 
   app.use(morgan('dev')) // configire morgan
 
-  app.use('/images', express.static(path.join(__dirname, 'images')))
+  // app.use('/images', express.static(path.join(__dirname, 'images')))
   app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-  app.use('/api/stuff', stuffRoutes)
-  app.use('/api/auth', userRoutes)
   app.use('/api/music', musicRoutes)
-  app.use('/api/users', usersRoutes)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

@@ -104,7 +104,7 @@ export default {
           'http://localhost:3000/api/music'
         )
         // eslint-disable-next-line no-console
-        console.log(response)
+        // console.log(response)
         if (response === []) {
           this.song = true
           this.current = null

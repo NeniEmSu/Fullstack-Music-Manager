@@ -14,43 +14,21 @@
         products section with CRUD functionality wraped arround jwt auth, a
         basic store and an elegant music player.
       </p>
-
-      <section class="products">
-        <h2>Products</h2>
-        <div v-for="thing in stuff" :key="thing._id">
-          <img :src="thing.imageUrl" :alt="thing.title" />
-          <h3>{{ thing.title }}</h3>
-          <p>{{ thing.description }}</p>
-          <p>{{ formatPrice(thing.price) }}</p>
-        </div>
-      </section>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
     Logo
-  },
-  async asyncData() {
-    const { data } = await axios.get('http://localhost:3000/api/stuff')
-    return { stuff: data }
-  },
-  methods: {
-    formatPrice(value) {
-      const val = (value / 100).toFixed(2).replace('.', ',')
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    }
-  },
-  head() {
-    return {
-      title: 'Stuff'
-    }
   }
+  // async asyncData() {
+  //   const { data } = await axios.get('http://localhost:3000/api/stuff')
+  //   return { stuff: data }
+  // }
 }
 </script>
 

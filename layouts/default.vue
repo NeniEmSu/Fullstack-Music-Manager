@@ -2,14 +2,17 @@
   <div>
     <TheHeader />
     <nuxt />
+    <!-- <appPlayer></appPlayer> -->
   </div>
 </template>
 
 <script>
 import TheHeader from '~/components/TheHeader'
+// import appPlayer from '~/components/Player.vue'
 export default {
   components: {
     TheHeader
+    // appPlayer
   }
 }
 </script>
