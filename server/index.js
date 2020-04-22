@@ -64,8 +64,8 @@ async function start() {
 
   app.use(morgan('dev')) // configire morgan
 
-  // app.use('/images', express.static(path.join(__dirname, 'images')))
-  app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+  app.use('/images', express.static(path.join(__dirname, 'images')))
+  app.use('/audio', express.static(path.join(__dirname, 'audio')))
 
   app.use('/api/music', musicRoutes)
 

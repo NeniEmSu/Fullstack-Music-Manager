@@ -8,11 +8,19 @@ const musicSchema = mongoose.Schema({
     type: Object,
     required: true
   },
+  image: {
+    type: Object,
+    required: true
+  },
   artist: {
     type: String,
     required: true
   },
   created: {
+    type: Date,
+    default: Date.now()
+  },
+  updated: {
     type: Date,
     default: Date.now()
   }
