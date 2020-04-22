@@ -17,7 +17,7 @@ exports.addNewMusic = async (req, res) => {
     })
 
     const newMusic = await music.save()
-    res.status(200).json({ data: newMusic })
+    res.status(201).json({ data: newMusic })
   } catch (err) {
     res.status(500).json({ error: err })
   }

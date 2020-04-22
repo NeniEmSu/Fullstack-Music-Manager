@@ -81,7 +81,11 @@ export default {
   },
 
   computed: {},
-  watch: {},
+  watch: {
+    $route() {
+      this.pause()
+    }
+  },
   created() {
     if (process.client) {
       this.player = new Audio()
@@ -92,7 +96,7 @@ export default {
     async initPlayer() {
       if (this.allMusic !== []) {
         this.current = await this.allMusic[this.index]
-        this.player.src = `http://localhost:3000/uploads/${this.current.music.filename}`
+        this.player.src = `http://localhost:3000/audio/${this.current.music[0].filename}`
         // 'https://node-25.zeno.fm/2nbarxy58gruv?rj-ttl=5&rj-token=AAABbaz-hYmOGrId5LpDft3ShkPFG2ZoMeFGDoQpcTKrHQs2CDcwyQ&rj-tok=AAABcBowxjEAD9-yb1pypjSejA'
       } else {
         this.song = true
@@ -124,7 +128,7 @@ export default {
       console.log(song)
       if (song) {
         this.current = song
-        this.player.src = `http://localhost:3000/uploads/${this.current.music.filename}`
+        this.player.src = `http://localhost:3000/audio/${this.current.music[0].filename}`
       }
       this.player.play()
       this.isplaying = true

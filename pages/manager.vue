@@ -47,14 +47,37 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <button class="btn btn-primary" :disabled="isDisabled">
-                    <span
-                      v-if="addLoading"
-                      class="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true"
-                    ></span
-                    >Submit
+                  <label for="image">Image</label>
+                  <div class="custom-file">
+                    <input
+                      id="imageFile"
+                      ref="image"
+                      type="file"
+                      class="custom-file-input"
+                      @change="handleImageUpload()"
+                    />
+                    <label class="custom-file-label" for="image">
+                      {{
+                        musicDetails.image !== ''
+                          ? musicDetails.image.name
+                          : 'Choose image'
+                      }}
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span
+                    v-if="addLoading"
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span
+                  ><button
+                    v-else
+                    class="btn btn-primary"
+                    :disabled="isDisabled"
+                  >
+                    Submit
                   </button>
                 </div>
               </form>
@@ -77,6 +100,7 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Title</th>
                     <th scope="col">Artist</th>
                     <th scope="col">Date created</th>
@@ -88,12 +112,21 @@
                   class="spinner-border"
                   style="width: 3rem; height: 3rem;"
                   role="status"
-                >
-                  <span class="sr-only">Loading...</span>
-                </div>
+                ></div>
+                <h2 v-else-if="allmusic === [] && !musicLoading">
+                  No Songs ATM, consider adding one.
+                </h2>
                 <tbody v-else>
                   <tr v-for="(music, index) in allmusic" :key="index">
                     <td>{{ index + 1 }}</td>
+                    <td>
+                      <img
+                        :src="
+                          `http://localhost:3000/images/${music.image[0].filename}`
+                        "
+                        alt=""
+                      />
+                    </td>
                     <td>{{ music.title }}</td>
                     <td>{{ music.artist }}</td>
                     <td>{{ $moment(music.created).format('LLLL') }}</td>
@@ -124,7 +157,8 @@ export default {
       musicDetails: {
         title: '',
         artist: '',
-        music: ''
+        music: '',
+        image: ''
       },
       allmusic: [],
       musicLoading: false,
@@ -169,23 +203,31 @@ export default {
       this.musicDetails.music = this.$refs.file.files[0]
       console.log(this.musicDetails.music.type)
     },
+    handleImageUpload() {
+      this.musicDetails.image = this.$refs.image.files[0]
+      console.log(this.musicDetails.image.type)
+    },
     addNewMusic() {
       const types = /(\.|\/)(mp3|mp4)$/i
+      const imageTypes = /(\.|\/)(png|jpeg|jpg)$/i
       if (
         types.test(this.musicDetails.music.type) ||
-        types.test(this.musicDetails.music.name)
+        types.test(this.musicDetails.music.name) ||
+        imageTypes.test(this.musicDetails.image.type) ||
+        imageTypes.test(this.musicDetails.image.name)
       ) {
         const formData = new FormData()
         formData.append('title', this.musicDetails.title)
         formData.append('artist', this.musicDetails.artist)
         formData.append('music', this.musicDetails.music)
+        formData.append('image', this.musicDetails.image)
         this.addLoading = true
         this.$axios
           .$post('http://localhost:3000/api/music', formData)
           .then((response) => {
             console.log(response)
             this.addLoading = false
-            this.musicDetails = { title: '', artist: '', music: '' }
+            this.musicDetails = { title: '', artist: '', music: '', image: '' }
             this.getAllMusics() // we will create this function later
 
             this.$swal('Success', 'New Music Added', 'success')
@@ -232,3 +274,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+</style>
