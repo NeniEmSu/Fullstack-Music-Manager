@@ -121,10 +121,8 @@
                     <td>{{ index + 1 }}</td>
                     <td>
                       <img
-                        :src="
-                          `http://localhost:3000/images/${music.image[0].filename}`
-                        "
-                        alt=""
+                        :src="`/images/${music.image[0].filename}`"
+                        :alt="music.artist + music.title"
                       />
                     </td>
                     <td>{{ music.title }}</td>
@@ -187,7 +185,7 @@ export default {
     async getAllMusics() {
       this.musicLoading = true
       try {
-        const data = await this.$axios.$get('http://localhost:3000/api/music')
+        const data = await this.$axios.$get('/api/music')
         this.allmusic = data
         this.musicLoading = false
       } catch (err) {
@@ -223,7 +221,7 @@ export default {
         formData.append('image', this.musicDetails.image)
         this.addLoading = true
         this.$axios
-          .$post('http://localhost:3000/api/music', formData)
+          .$post('/api/music', formData)
           .then((response) => {
             console.log(response)
             this.addLoading = false
@@ -254,7 +252,7 @@ export default {
       }).then((willDelete) => {
         if (willDelete) {
           this.$axios
-            .$delete('http://localhost:3000/api/music/' + id)
+            .$delete('/api/music/' + id)
             .then((response) => {
               this.getAllMusics()
 

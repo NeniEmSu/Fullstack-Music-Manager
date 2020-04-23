@@ -26,7 +26,7 @@ export default {
     Logo
   }
   // async asyncData() {
-  //   const { data } = await axios.get('http://localhost:3000/api/stuff')
+  //   const { data } = await axios.get('/api/stuff')
   //   return { stuff: data }
   // }
 }

@@ -9,7 +9,11 @@
       <div class="row mt-5">
         <div class="col-md-6">
           <img
-            src="https://images.pexels.com/photos/3624281/pexels-photo-3624281.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+            :src="
+              current.image
+                ? `/images/${current.image[0].filename}`
+                : 'https://images.pexels.com/photos/3624281/pexels-photo-3624281.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+            "
             class="image"
           />
           <div class="card player_card">
@@ -96,7 +100,7 @@ export default {
     async initPlayer() {
       if (this.allMusic !== []) {
         this.current = await this.allMusic[this.index]
-        this.player.src = `http://localhost:3000/audio/${this.current.music[0].filename}`
+        this.player.src = `/audio/${this.current.music[0].filename}`
         // 'https://node-25.zeno.fm/2nbarxy58gruv?rj-ttl=5&rj-token=AAABbaz-hYmOGrId5LpDft3ShkPFG2ZoMeFGDoQpcTKrHQs2CDcwyQ&rj-tok=AAABcBowxjEAD9-yb1pypjSejA'
       } else {
         this.song = true
@@ -104,9 +108,7 @@ export default {
     },
     async getAllSongs() {
       try {
-        const response = await this.$axios.$get(
-          'http://localhost:3000/api/music'
-        )
+        const response = await this.$axios.$get('/api/music')
         // eslint-disable-next-line no-console
         // console.log(response)
         if (response === []) {
@@ -128,7 +130,7 @@ export default {
       console.log(song)
       if (song) {
         this.current = song
-        this.player.src = `http://localhost:3000/audio/${this.current.music[0].filename}`
+        this.player.src = `/audio/${this.current.music[0].filename}`
       }
       this.player.play()
       this.isplaying = true
