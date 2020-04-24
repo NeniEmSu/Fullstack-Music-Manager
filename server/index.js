@@ -10,6 +10,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const config = require('../nuxt.config.js')
 const musicRoutes = require('./routes/music')
+require('dotenv').config()
 
 // Import and Set Nuxt.js options
 config.dev = process.env.NODE_ENV !== 'production'
@@ -29,13 +30,10 @@ async function start() {
 
   mongoose.set('useCreateIndex', true)
   mongoose
-    .connect(
-      'mongodb+srv://neni:88fAHEm9gteF69Lw@productsdevcluster-u3co4.mongodb.net/test?retryWrites=true&w=majority',
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      }
-    )
+    .connect(process.env.MONGO_DB_CONNECTION, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
     .then(() => {
       console.log('connected to mongodb atlas')
     })

@@ -35,6 +35,7 @@
                       ref="file"
                       type="file"
                       class="custom-file-input"
+                      enctype="multipart/form-data"
                       @change="handleFileUpload()"
                     />
                     <label class="custom-file-label" for="customFile">
@@ -54,6 +55,7 @@
                       ref="image"
                       type="file"
                       class="custom-file-input"
+                      enctype="multipart/form-data"
                       @change="handleImageUpload()"
                     />
                     <label class="custom-file-label" for="image">
