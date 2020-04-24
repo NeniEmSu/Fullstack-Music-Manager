@@ -167,6 +167,8 @@ export default {
   position: relative;
   height: 300px;
   width: 100%;
+
+  object-fit: cover;
 }
 .player_card {
   text-align: center;
